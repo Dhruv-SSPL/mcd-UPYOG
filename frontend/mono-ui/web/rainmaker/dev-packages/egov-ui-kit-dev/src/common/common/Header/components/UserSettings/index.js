@@ -428,17 +428,17 @@ class UserSettings extends Component {
       },
 
       // Profile
-      {
-        primaryText: <Label label="CS_HOME_HEADER_PROFILE" />,
-        route: "/user/profile",
-        leftIcon: <Icon action="social" name="person" className="iconClassHover material-icons whiteColor customMenuItem" />,
-        style: { paddingBottom: "3px", paddingTop: "3px" },
-        id: "header-profile",
-        path: "userprofile",
-        renderforcsr: 1,
-        renderforadmin: 1,
-        renderforPGREmp: 1,
-      },
+      // {
+      //   primaryText: <Label label="CS_HOME_HEADER_PROFILE" />,
+      //   route: "/user/profile",
+      //   leftIcon: <Icon action="social" name="person" className="iconClassHover material-icons whiteColor customMenuItem" />,
+      //   style: { paddingBottom: "3px", paddingTop: "3px" },
+      //   id: "header-profile",
+      //   path: "userprofile",
+      //   renderforcsr: 1,
+      //   renderforadmin: 1,
+      //   renderforPGREmp: 1,
+      // },
 
       // Logout
       {
