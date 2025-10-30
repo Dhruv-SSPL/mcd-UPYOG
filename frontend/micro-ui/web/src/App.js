@@ -64,34 +64,34 @@ const enabledModules = [
   "PGR",
   "FSM",
   "Payment",
-  "PT",
+  // "PT",
   "QuickPayLinks",
   "DSS",
   "NDSS",
   "MCollect",
   "HRMS",
-  "TL",
+  // "TL",
   "Receipts",
-  "OBPS",
-  "NOC",
+  // "OBPS",
+  // "NOC",
   "Engagement",
   "Finance",
   "CommonPT",
-  "WS",
+  // "WS",
   "Reports",
   "Bills",
-  "SW",
+  // "SW",
   "BillAmendment",
   "FireNoc",
   "Birth",
   "Death",
-  "PTR",
+  // "PTR",
   "ASSET",
-  "ADS",
-  "SV",
-  "EW",
-  "CHB",
-  "WT",
+  // "ADS",
+  // "SV",
+  // "EW",
+  // "CHB",
+  // "WT",
   "VENDOR",
   "MT"
 ];
@@ -135,17 +135,17 @@ window.Digit.ComponentRegistryService.setupRegistry({
   ...VENDORComponents
 });
 
-initPGRComponents();
+// initPGRComponents();
 initFSMComponents();
 initDSSComponents();
 initMCollectComponents();
 initHRMSComponents();
-initTLComponents();
+// initTLComponents();
 initReceiptsComponents();
-initOBPSComponents();
-initNOCComponents();
+// initOBPSComponents();
+// initNOCComponents();
 initEngagementComponents();
-initWSComponents();
+// initWSComponents();
 initCommonPTComponents();
 initBillsComponents();
 initFinanceComponents();
