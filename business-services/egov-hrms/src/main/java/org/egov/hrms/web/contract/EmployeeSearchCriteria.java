@@ -58,7 +58,7 @@ public class EmployeeSearchCriteria {
 
 	private Boolean includeUnassigned = false;
 	
-	private List<String> zones;
+	private List<String> zone;
 	
 	
 	public boolean isCriteriaEmpty(EmployeeSearchCriteria criteria) {
@@ -67,7 +67,7 @@ public class EmployeeSearchCriteria {
 				&& CollectionUtils.isEmpty(criteria.getIds()) && CollectionUtils.isEmpty(criteria.getEmployeestatuses())
 				&& CollectionUtils.isEmpty(criteria.getEmployeetypes()) && CollectionUtils.isEmpty(criteria.getUuids())
 				&& CollectionUtils.isEmpty(criteria.getPositions()) && StringUtils.isEmpty(criteria.getTenantId())
-				&& CollectionUtils.isEmpty(criteria.getRoles()) && CollectionUtils.isEmpty(criteria.getZones()) 
+				&& CollectionUtils.isEmpty(criteria.getRoles()) && CollectionUtils.isEmpty(criteria.getZone()) 
 				&& null == criteria.getAsOnDate()) {
 			return true;
 		}else {
