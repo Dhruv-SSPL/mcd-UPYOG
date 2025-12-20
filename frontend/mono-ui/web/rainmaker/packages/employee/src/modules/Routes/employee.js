@@ -32,7 +32,7 @@ const redirectionUrl = "/digit-ui/employee/user/login";
 
 const routes = [
   {
-    path: "user/login",
+    path: "digit-ui/employee/user/login",
     component: Login,
     needsAuthentication: false,
     redirectionUrl: "/inbox",
