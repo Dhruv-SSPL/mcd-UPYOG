@@ -80,7 +80,7 @@ class App extends Component {
   render() {
     const { toast, loading, defaultUrl, hasLocalisation } = this.props;
     let loginScreens = false;
-    let logginScreensUrls = ['/employee/digit-ui/employee/user/login', '/employee/forgot-password', '/employee/language-selection'];
+    let logginScreensUrls = ['/digit-ui/employee/user/login', '/employee/forgot-password', '/employee/language-selection'];
     if (logginScreensUrls.includes(window.location.pathname)) {
       loginScreens = true;
     }    
