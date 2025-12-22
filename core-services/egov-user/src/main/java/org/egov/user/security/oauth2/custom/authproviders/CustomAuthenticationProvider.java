@@ -11,6 +11,7 @@ import org.egov.user.domain.model.User;
 import org.egov.user.domain.model.enums.UserType;
 import org.egov.user.domain.service.UserService;
 import org.egov.user.domain.service.utils.EncryptionDecryptionUtil;
+import org.egov.user.domain.service.utils.PasswordCryptoUtil;
 import org.egov.user.web.contract.auth.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +48,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private EncryptionDecryptionUtil encryptionDecryptionUtil;
+    
+    @Autowired
+    private PasswordCryptoUtil passwordCryptoUtil;
 
     @Value("${citizen.login.password.otp.enabled}")
     private boolean citizenLoginPasswordOtpEnabled;
@@ -71,7 +75,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) {
         String userName = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        String encryptedPassword = authentication.getCredentials().toString();
+        String password = passwordCryptoUtil.decrypt(encryptedPassword);
 
         final LinkedHashMap<String, String> details = (LinkedHashMap<String, String>) authentication.getDetails();
 
