@@ -16,6 +16,7 @@ import org.egov.user.domain.service.utils.PasswordCryptoUtil;
 import org.egov.user.web.contract.auth.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,9 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,6 +71,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private HttpServletRequest request;
+    
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
 
     @Autowired
     private AuthAuditLogService authAuditLogService;
@@ -92,34 +95,36 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         //  CAPTCHA VALIDATION
         // =====================================================
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            throw new OAuth2Exception("Session expired. Please refresh captcha");
-        }
-
-        String storedCaptcha = (String) session.getAttribute("CAPTCHA_VALUE");
         String captcha = details.get("captcha");
+        String captchaId = details.get("captchaId");
 
-        log.info("Captcha entered: {}", captcha);
-        log.info("Captcha stored: {}", storedCaptcha);
-
-        if (storedCaptcha == null) {
-            throw new OAuth2Exception("Captcha expired. Please try again");
+        if (captchaId == null || captchaId.isEmpty()) {
+            throw new OAuth2Exception("CaptchaId missing");
         }
 
         if (captcha == null || captcha.trim().isEmpty()) {
             throw new OAuth2Exception("Captcha is mandatory");
         }
 
+        String redisKey = "CAPTCHA:" + captchaId;
+
+        String storedCaptcha = redisTemplate.opsForValue().get(redisKey);
+
+        log.info("Captcha entered: {}", captcha);
+        log.info("Captcha stored in redis: {}", storedCaptcha);
+
+        if (storedCaptcha == null) {
+            throw new OAuth2Exception("Captcha expired. Please refresh captcha");
+        }
+
         if (!storedCaptcha.equals(captcha)) {
-        	
+
             authAuditLogService.log(
                     null,
                     userName,
                     request.getRemoteAddr(),
                     request.getHeader("User-Agent"),
-                    session.getId(),
+                    null,
                     "LOGIN",
                     "FAILURE",
                     request.getRequestURI()
@@ -128,8 +133,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new OAuth2Exception("Invalid captcha");
         }
 
-        // Remove captcha after successful validation
-        session.removeAttribute("CAPTCHA_VALUE");
+        // delete after use
+        redisTemplate.delete(redisKey);
+
         
         
         String tenantId = details.get("tenantId");
